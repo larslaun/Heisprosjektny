@@ -15,9 +15,14 @@ int checkIfQueueEmpty(int *queue, int queueSize){
 
 void controller(int *queueUp, int *queueDown, int *queueCar){
     carLights(queueCar);
-
     floorLight();
+
+    //Global currentfloor?
+    if (elevio_floorSensor != -1){
+        int currentFloor = elevio_floorSensor();
+    }
     int nextFloor;
+
     if (checkIfQueueEmpty(queueUp,3) == 1){
         if (checkIfQueueEmpty(queueDown,3) == 1){
             if (checkIfQueueEmpty(queueCar,4) == 1){
@@ -31,10 +36,92 @@ void controller(int *queueUp, int *queueDown, int *queueCar){
         for (int i=0; i<4; i++){
             if(queueCar[i]!=5){
                 nextFloor = queueCar[i];
+                break;
             }
         }
+        //ny kode
+        if (nextFloor > currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueCar[i] != 5){
+                    if (currentFloor < queueCar[i]){
+                        if (queueCar[i] < nextFloor){
+                            nextFloor = queueCar[i];
+                        }   
+                    }
+                }
+            }
+        }   
 
+        if (nextFloor < currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueCar[i] != 5){
+                     if (currentFloor > queueCar[i]){
+                        if (queueCar[i] > nextFloor){
+                            nextFloor = queueCar[i];
+                        }   
+                    }
+                }
+            }
+        }       
+        
+        //slutt ny kode
     }
+
+    //Ny kode for logikk/valg av etasje
+     if (nextFloor > currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueUp[i] != 5){
+                    if (currentFloor < queueUp[i]){
+                        if (queueUp[i] < nextFloor){
+                            nextFloor = queueUp[i];
+                        }   
+                    }
+                }
+            }
+        }   
+
+    else if (nextFloor < currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueUp[i] != 5){
+                     if (currentFloor > queueUp[i]){
+                        if (queueUp[i] > nextFloor){
+                            nextFloor = queueUp[i];
+                        }   
+                    }
+                }
+            }
+        }   
+
+
+    if (nextFloor > currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueDown[i] != 5){
+                    if (currentFloor < queueDown[i]){
+                        if (queueDown[i] < nextFloor){
+                            nextFloor = queueDown[i];
+                        }   
+                    }
+                }
+            }
+        }   
+
+    else if (nextFloor < currentFloor){
+            for (int i = 0; i < 3, i++){
+                if (queueDown[i] != 5){
+                     if (currentFloor > queueDown[i]){
+                        if (queueDown[i] > nextFloor){
+                            nextFloor = queueDown[i];
+                        }   
+                    }
+                }
+            }
+        }  
+    
+    //slutt ny kode
+
+
+
+
 
     printf("QueueCar:\n");
     for (int i = 0; i < 4; i++){
