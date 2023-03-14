@@ -64,7 +64,28 @@ int main(){
         
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
-            break;
+            elevio_stopLamp(1);
+            if(elevio_floorSensor() != -1){
+                openDoor();
+            }
+            while(elevio_stopButton()){               
+            }
+            elevio_stopLamp(0);
+            if(elevio_floorSensor() != -1){
+                doorTimer();
+                while(elevio_obstruction() == 1){
+                }
+                closeDoor();
+            }
+
+            queueUp[3] = {5, 5, 5};
+            queueDown[3] = {5, 5, 5};
+            queueCar[4] = {5, 5, 5, 5};
+
+            //OG stopp
+            //elevio_motorDirection(DIRN_STOP);
+            //break;
+            //
         }
 
         controller(queueUp, queueDown, queueCar);

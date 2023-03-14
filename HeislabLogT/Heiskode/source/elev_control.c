@@ -17,7 +17,7 @@ int checkIfQueueEmpty(int *queue, int queueSize)
 
 void controller(int *queueUp, int *queueDown, int *queueCar)
 {
-    carLights(queueCar);
+    orderLights(queueCar, queueUp, queueDown);
     floorLight();
 
     // Global currentfloor?
@@ -43,7 +43,7 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
     {
         nextFloor = queueUp[0];
     }
-    else if (queueUp[0] == 5)
+    if (queueUp[0] == 5)
     {
         nextFloor = queueDown[0];
     }
@@ -61,7 +61,6 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
                     break;
                 }
             }
-            // ny kode
             if (nextFloor > currentFloor)
             {
                 for (int i = 0; i < 4; i++)
@@ -95,11 +94,8 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
                     }
                 }
             }
-
-            // slutt ny kode
         }
 
-        // Ny kode for logikk/valg av etasje
         if (nextFloor > currentFloor)
         {
             if (elevio_floorSensor() != -1)
@@ -120,6 +116,7 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
             }
         }
 
+
         else if (nextFloor < currentFloor)
         {
             for (int i = 0; i < 3; i++)
@@ -137,8 +134,7 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
             }
         }
     }
-    // slutt ny kode
-
+    
     printf("QueueCar:\n");
     for (int i = 0; i < 4; i++)
     {
@@ -151,28 +147,34 @@ void controller(int *queueUp, int *queueDown, int *queueCar)
     printf("Currentfloor: ");
     printf("%d\n", currentFloor);
 
+    //ny
+    currentFloor = elevio_floorSensor();
+    //
+
     goToFloor(nextFloor, queueUp, queueDown, queueCar, currentFloor);
 }
 
-void goToFloor(int) if (currentFloor != -1)
-{
+void goToFloor(int nextFloor, int *queueUp, int *queueDown, int *queueCar, int currentFloor){
 
-    if (nextFloor == currentFloor)
-    {
-        printf("\nSkal stoppe nå\n");
-        elevio_motorDirection(DIRN_STOP);
-        removeFromQueue(queueUp, queueDown, queueCar, nextFloor);
+    if (currentFloor != -1)
+        {
 
-        doorWhenFloor();
-    }
+        if (nextFloor == currentFloor)
+        {
+            printf("\nSkal stoppe nå\n");
+            elevio_motorDirection(DIRN_STOP);
+            removeFromQueue(queueUp, queueDown, queueCar, nextFloor);
 
-    if (nextFloor > currentFloor)
-    {
-        elevio_motorDirection(DIRN_UP);
-    }
-    if (nextFloor < currentFloor)
-    {
-        elevio_motorDirection(DIRN_DOWN);
-    }
-}
+            doorWhenFloor();
+        }
+
+        if (nextFloor > currentFloor)
+        {
+            elevio_motorDirection(DIRN_UP);
+        }
+        if (nextFloor < currentFloor)
+        {
+            elevio_motorDirection(DIRN_DOWN);
+        }
+    }   
 }

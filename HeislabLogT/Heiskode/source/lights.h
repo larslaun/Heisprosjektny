@@ -4,9 +4,7 @@
 
 void floorLight();
 
-void carLights(int *queueCar);
-
-void callLights();
+void orderLights(int *queueCar, int *queueUp, int *queueDown);
 
 
 
